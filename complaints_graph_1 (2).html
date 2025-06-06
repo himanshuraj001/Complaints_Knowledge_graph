@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "Shri Dinesh Singh Bhadoriya", "label": "Shri Dinesh Singh Bhadoriya", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Shri Mahavir Bhagel", "label": "Shri Mahavir Bhagel", "shape": "dot", "type": "accused"}, {"color": "#97c2fc", "id": "Shri Yogendra Singh Bhadoriya", "label": "Shri Yogendra Singh Bhadoriya", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Sumer Singh Narwariya", "label": "Sumer Singh Narwariya", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Shri Yogendra Kashinath Dorkar", "label": "Shri Yogendra Kashinath Dorkar", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Dr. Rajendra Bharud", "label": "Dr. Rajendra Bharud", "shape": "dot", "type": "accused"}, {"color": "#97c2fc", "id": "Shri Jagpal Singh", "label": "Shri Jagpal Singh", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Shri Praveen Kumar", "label": "Shri Praveen Kumar", "shape": "dot", "type": "accused"}, {"color": "#97c2fc", "id": "Dainik Aaj", "label": "Dainik Aaj", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Shri Anam Ibrahim", "label": "Shri Anam Ibrahim", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Director General of Police", "label": "Director General of Police", "shape": "dot", "type": "accused"}, {"color": "#97c2fc", "id": "Mr. Naveen Das", "label": "Mr. Naveen Das", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Information and Public Relations Director", "label": "Information and Public Relations Director", "shape": "dot", "type": "accused"}, {"color": "#97c2fc", "id": "Journalist", "label": "Journalist", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Police", "label": "Police", "shape": "dot", "type": "accused"}, {"color": "#97c2fc", "id": "Shri Anil Sinha", "label": "Shri Anil Sinha", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Delhi Police", "label": "Delhi Police", "shape": "dot", "type": "accused"}, {"color": "#97c2fc", "id": "Shri Sanjeev Verma", "label": "Shri Sanjeev Verma", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "media", "label": "media", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Rajasthan Chief Minister", "label": "Rajasthan Chief Minister", "shape": "dot", "type": "accused"}, {"color": "#97c2fc", "id": "reporters", "label": "reporters", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Rajkot Collector", "label": "Rajkot Collector", "shape": "dot", "type": "accused"}, {"color": "#97c2fc", "id": "Shri Sanjay Kumar Singh", "label": "Shri Sanjay Kumar Singh", "shape": "dot", "type": "complainant"}, {"color": "#97c2fc", "id": "Mrs. Suchita Kumari", "label": "Mrs. Suchita Kumari", "shape": "dot", "type": "accused"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "Shri Dinesh Singh Bhadoriya", "label": "Harassment of Newsmen\n15.11.2022\nUpheld\n, Gwalior", "to": "Shri Mahavir Bhagel"}, {"arrows": "to", "from": "Shri Yogendra Singh Bhadoriya", "label": "Harassment of Newsmen\n15.11.2022\nUpheld\n, Gwalior", "to": "Shri Mahavir Bhagel"}, {"arrows": "to", "from": "Sumer Singh Narwariya", "label": "Harassment of Newsmen\n15.11.2022\nUpheld\n, Gwalior", "to": "Shri Mahavir Bhagel"}, {"arrows": "to", "from": "Shri Yogendra Kashinath Dorkar", "label": "Harassment of Newsmen\n15.11.2022\nDisposed of\n, Maharashtra", "to": "Dr. Rajendra Bharud"}, {"arrows": "to", "from": "Shri Jagpal Singh", "label": "Harassment of Newsmen\n28.02.2023\nDisposed of\n, Gonda", "to": "Shri Praveen Kumar"}, {"arrows": "to", "from": "Dainik Aaj", "label": "Harassment of Newsmen\n28.02.2023\nDisposed of\n, Gonda", "to": "Shri Praveen Kumar"}, {"arrows": "to", "from": "Shri Anam Ibrahim", "label": "Harassment of Newsmen\n28.02.2023\nDisposed of for being sub- judice\n, Bhopal", "to": "Director General of Police"}, {"arrows": "to", "from": "Mr. Naveen Das", "label": "Facilities to the Press\n15.11.2022\nDisposed of being Withdrawn\n", "to": "Information and Public Relations Director"}, {"arrows": "to", "from": "Journalist", "label": "Suo-Motu Cognizance\n22.09.2022\nDisposed of with observa\u00ad tion \u0026 Com\u00ad pensation\n, Chandigarh", "to": "Police"}, {"arrows": "to", "from": "Shri Anil Sinha", "label": "Suo-Motu Cognizance\n22.09.2022\nDisposed of\n, Delhi", "to": "Delhi Police"}, {"arrows": "to", "from": "Shri Sanjeev Verma", "label": "Suo-Motu Cognizance\n22.09.2022\nDisposed of\n, Delhi", "to": "Delhi Police"}, {"arrows": "to", "from": "media", "label": "Suo-Motu Cognizance\n15.11.2022\nUpheld\n, Rajasthan", "to": "Rajasthan Chief Minister"}, {"arrows": "to", "from": "reporters", "label": "Suo-Motu Cognizance\n15.11.2022\nCensured Newspapers and warning issued to Govt. authority\n, Rajkot", "to": "Rajkot Collector"}, {"arrows": "to", "from": "Shri Sanjay Kumar Singh", "label": "Curtailment of Press Freedom\n22.09.2022\nRejected\n, Bihar", "to": "Mrs. Suchita Kumari"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
